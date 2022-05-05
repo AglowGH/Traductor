@@ -169,3 +169,190 @@ while auto.token != "EOF":
     auto.analex()
 #
 #
+
+def X(automata):
+    I(automata)
+
+def I(automata):
+    automata.analex()
+    if(automata.token == "pgr"):
+        automata.analex()
+        if(automata.token == "id"):
+            automata.analex()
+            if(automata.token == "ini"):
+                automata.analex()
+                Z(automata,automata.token)
+                if(automata.token is "fn"):
+                    ...
+                else:
+                    #sintax error
+            else:
+                #sintax error
+        else:
+            #sintax error
+    else:
+        #sintax error
+
+def Z(automata,token):
+    if token in {"fn","fc","fns","sino"}:
+        return
+    elif token in {"cc","bc","cn","ceb","ceo"}:
+        automata.analex()
+        F(automata,automata.token)
+        Z(automata,automata.token)
+        return
+    elif token is "si":
+        automata.analex()
+        ES(automata,automata.token)
+        Z(automata,automata.token)
+        return
+    elif token is "cl":
+        automata.analex()
+        EC(automata,automata.token)
+        Z(automata,automata.token)
+        return
+    else:
+        #Sintax error
+
+def F(automata,token):
+    if token in {"cc","bc","cn","ceb"}:
+        F1(automata,token)
+        return
+    elif token is "ceo":
+        F2(automata,token)
+        return
+    else:
+        #sintax error
+
+def F1(automata,token):
+    if token is "cc":
+        automata.analex()
+        if automata.token is "(":
+            automata.analex()
+            if automata.token is "id":
+                automata.analex()
+                if automata.token is ",":
+                    automata.analex()
+                    if automata.token is "numero":
+                        automata.analex()
+                        if automata.token is ",":
+                            automata.analex()
+                            if automata.token is "numero":
+                                automata.analex()
+                                if automata.token is ")":
+                                    ...
+                                else:
+                                    #sintax error
+                            else:
+                                #sintax error
+                        else:
+                            #sintax error
+                    else:
+                        #sintax error
+                else:
+                    #sintax error
+            else:
+                #sintax error
+        else:
+            #sintax error
+    elif token is "bc":
+        automata.analex()
+        if automata.token is "(":
+            automata.analex()
+            if automata.token is "id":
+                automata.analex()
+                if automata.token is ")":
+                    ...
+                else:
+                    #sintax error
+            else:
+                #sintax error
+        else:
+            #sintax error
+    elif token is "cn":
+        automata.analex()
+        if automata.token is "(":
+            automata.analex()
+            if automata.token is "id":
+                automata.analex()
+                if automata.token is ",":
+                    automata.analex()
+                    if automata.token is "id":
+                        automata.analex()
+                        if automata.token is ")":
+                            ...
+                        else:
+                            #sintax error
+                    else:
+                        #sintax error
+                else:
+                    #sintax error
+            else:
+                #sintax error
+        else:
+            #sintax error
+    elif token is "ceb":
+        automata.analex()
+        if automata.token is "(":
+            automata.analex()
+            if automata.token is "id":
+                automata.analex()
+                if automata.token is ",":
+                    automata.analex()
+                    F1_prima(automata,automata.token)
+                else:
+                    #sintax error
+            else:
+                #sintax error
+        else:
+            #sintax error
+    else:
+        #sintax error
+
+def F1_prima(automata,token):
+    if token in {"abierto","cerrado"}:
+        E1(automata,token)
+        automata.analex()
+        if automata.token is ")":
+            ...
+        else:
+            #sintax error
+    elif token in {"sonriente","enojado","triste"}:
+        E2(automata,token)
+        automata.analex()
+        if automata.token is ")":
+            ...
+        else:
+            #sintax error
+    else:
+        #sintax error
+
+#################
+
+def E1(automata,token):
+    if token is "abierto":
+        ...
+    elif token is "cerrado":
+        ...
+    else:
+        #sintax error
+
+def E2(automata,token):
+    if token is "sonriente":
+        ...
+    elif token is "enojado":
+        ...
+    elif token is "triste":
+        ...
+    else:
+        #sintax error
+
+def OJO(automata,token):
+    if token is "derecho":
+        ...
+    elif token is "izquierdo":
+        ...
+    else:
+        #sintax error
+
+
