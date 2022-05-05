@@ -1,0 +1,2 @@
+reservada[constante,3.1416]
+reservada[g,9.12]

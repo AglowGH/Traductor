@@ -1,0 +1,2 @@
+reservada[constante,pi]
+reservada[numero_malo,666]

@@ -1,0 +1,32 @@
+Programa Emocion_1
+
+Inicio
+    creaCara(Matilde, 120, 150)
+    creaCara(Andres, 300, 150)
+    cambioEstadoOjo(Andres, abierto)
+    cambioEstadoOjo(Andres, derechoOizquierdo,cerrado)
+
+    Ciclo 4
+        Si estadoOjoDer=abierto entonces
+        
+            Si estadoOjoIzq = abierto entonces
+            
+                cambioEstadoOjo(Matilde, cerrado)
+
+            finSi
+        
+        Sino
+
+            cambioEstadoOjo(Matilde, abierto)
+    
+        finSi
+
+        cambioEstadoBoca(Matilde, sonriente)
+        
+        cambioEstadoBoca(Andres, enojado)
+        
+        cambioEstadoBoca(Matilde, neutro)
+
+    finCiclo
+
+fin
