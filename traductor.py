@@ -1,14 +1,21 @@
 import re
 
+#Errores
 class Error_Lexico(Exception):
     def __init__(self,msg):
         super().__init__(msg)
+class Error_Sintactico(Exception):
+    def __init__(self,msg):
+        super().__init__(msg)
 
-
+#Manejador de errores
 def manejadorErrores(linea,tipo,error):
 
     if tipo == "Error lexico":
         raise Error_Lexico("Error lexico en la linea " + str(linea) + " el error es: " + error)
+
+    if tipo == "Error sintactico":
+        raise Error_Sintactico("Error sintactico en la linea " + str(linea) + " error: " + error)
 
 class Automata:
     
@@ -83,7 +90,7 @@ class Automata:
             else:
                 tipo = self.dic_tokens[estado]
             
-            self.token = tipo + "," + lexema
+            self.token = [tipo , lexema , self.linea[0]]
             self.codigo[0][0] = self.codigo[0][0].replace(lexema,"",1)
 
             if self.codigo[0][0] == '':
@@ -144,7 +151,7 @@ def crearAutomata(ubicacion_archivo):
 
     return automata
 
-auto = crearAutomata("proyecto/automataProyecto.txt")
+auto = crearAutomata("automataProyecto.txt")
 #
 #Informacion de automata
 print(auto.tabla_transciciones)
@@ -154,11 +161,11 @@ print(auto.dic_tokens)
 print(auto.estado_inicial)
 #
 #palabras reservadas
-auto.guardar_reservadas("proyecto/palabras_reservadasProyecto.txt")
+auto.guardar_reservadas("palabras_reservadasProyecto.txt")
 print(auto.palabras_reservadas)
 #
 #codigo
-auto.guardar_codigo("proyecto/codigoProyecto1.txt")
+auto.guardar_codigo("codigoProyecto1.txt")
 for linea in auto.codigo:
     print(linea)
 #
@@ -169,190 +176,309 @@ while auto.token != "EOF":
     auto.analex()
 #
 #
+#Analizador sintactico LL1 ASDR
+#
+#
 
 def X(automata):
-    I(automata)
-
-def I(automata):
     automata.analex()
-    if(automata.token == "pgr"):
+    I(automata,automata.token)
+
+def I(automata,token):
+    if(token[0] == "prg"):
         automata.analex()
-        if(automata.token == "id"):
+        if(automata.token[0] == "id"):
             automata.analex()
-            if(automata.token == "ini"):
+            if(automata.token[0] == "ini"):
                 automata.analex()
-                Z(automata,automata.token)
-                if(automata.token is "fn"):
+                token = Z(automata,automata.token)
+                if token[0] is "fn":
                     ...
                 else:
-                    #sintax error
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
             else:
-                #sintax error
+                manejadorErrores(token[2],"Error sintáctico",token[0])
         else:
-            #sintax error
+            manejadorErrores(token[2],"Error sintáctico",token[0])
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def Z(automata,token):
-    if token in {"fn","fc","fns","sino"}:
-        return
-    elif token in {"cc","bc","cn","ceb","ceo"}:
+    if token[0] in {"fn","fc","fns","sino"}:
+        return token
+    elif token[0] in {"cc","bc","cn","ceb","ceo"}:
         automata.analex()
         F(automata,automata.token)
         Z(automata,automata.token)
-        return
-    elif token is "si":
+        return automata.analex()
+    elif token[0] is "si":
         automata.analex()
         ES(automata,automata.token)
         Z(automata,automata.token)
-        return
-    elif token is "cl":
+        return automata.analex()
+    elif token[0] is "cl":
         automata.analex()
         EC(automata,automata.token)
         Z(automata,automata.token)
-        return
+        return automata.analex()
     else:
-        #Sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def F(automata,token):
-    if token in {"cc","bc","cn","ceb"}:
+    if token[0] in {"cc","bc","cn","ceb"}:
         F1(automata,token)
         return
-    elif token is "ceo":
+    elif token[0] is "ceo":
         F2(automata,token)
         return
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def F1(automata,token):
-    if token is "cc":
+    if token[0] is "cc":
         automata.analex()
-        if automata.token is "(":
+        if automata.token[0] is "parentesisAbre":
             automata.analex()
-            if automata.token is "id":
+            if automata.token[0] is "id":
                 automata.analex()
-                if automata.token is ",":
+                if automata.token[0] is "coma":
                     automata.analex()
-                    if automata.token is "numero":
+                    if automata.token[0] is "numero":
                         automata.analex()
-                        if automata.token is ",":
+                        if automata.token[0] is "coma":
                             automata.analex()
-                            if automata.token is "numero":
+                            if automata.token[0] is "numero":
                                 automata.analex()
-                                if automata.token is ")":
+                                if automata.token[0] is "parentesisCierra":
                                     ...
                                 else:
-                                    #sintax error
+                                    manejadorErrores(token[2],"Error sintáctico",token[0])
                             else:
-                                #sintax error
+                                manejadorErrores(token[2],"Error sintáctico",token[0])
                         else:
-                            #sintax error
+                            manejadorErrores(token[2],"Error sintáctico",token[0])
                     else:
-                        #sintax error
+                        manejadorErrores(token[2],"Error sintáctico",token[0])
                 else:
-                    #sintax error
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
             else:
-                #sintax error
+                manejadorErrores(token[2],"Error sintáctico",token[0])
         else:
-            #sintax error
-    elif token is "bc":
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    elif token[0] is "bc":
         automata.analex()
-        if automata.token is "(":
+        if automata.token[0] is "parentesisAbre":
             automata.analex()
-            if automata.token is "id":
+            if automata.token[0] is "id":
                 automata.analex()
-                if automata.token is ")":
+                if automata.token[0] is "parentesisCierra":
                     ...
                 else:
-                    #sintax error
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
             else:
-                #sintax error
+                manejadorErrores(token[2],"Error sintáctico",token[0])
         else:
-            #sintax error
-    elif token is "cn":
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    elif token[0] is "cn":
         automata.analex()
-        if automata.token is "(":
+        if automata.token[0] is "parentesisAbre":
             automata.analex()
-            if automata.token is "id":
+            if automata.token[0] is "id":
                 automata.analex()
-                if automata.token is ",":
+                if automata.token[0] is "coma":
                     automata.analex()
-                    if automata.token is "id":
+                    if automata.token[0] is "id":
                         automata.analex()
-                        if automata.token is ")":
+                        if automata.token[0] is "parentesisCierra":
                             ...
                         else:
-                            #sintax error
+                           manejadorErrores(token[2],"Error sintáctico",token[0])
                     else:
-                        #sintax error
+                       manejadorErrores(token[2],"Error sintáctico",token[0])
                 else:
-                    #sintax error
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
             else:
-                #sintax error
+                manejadorErrores(token[2],"Error sintáctico",token[0])
         else:
-            #sintax error
-    elif token is "ceb":
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    elif token[0] is "ceb":
         automata.analex()
-        if automata.token is "(":
+        if automata.token[0] is "parentesisAbre":
             automata.analex()
-            if automata.token is "id":
+            if automata.token[0] is "id":
                 automata.analex()
-                if automata.token is ",":
+                if automata.token[0] is "coma":
                     automata.analex()
                     F1_prima(automata,automata.token)
                 else:
-                    #sintax error
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
             else:
-                #sintax error
+                manejadorErrores(token[2],"Error sintáctico",token[0])
         else:
-            #sintax error
+            manejadorErrores(token[2],"Error sintáctico",token[0])
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def F1_prima(automata,token):
-    if token in {"abierto","cerrado"}:
+    if token[0] in {"abr","crr"}:
         E1(automata,token)
         automata.analex()
-        if automata.token is ")":
+        if automata.token[0] is "parentesisCierra":
             ...
         else:
-            #sintax error
-    elif token in {"sonriente","enojado","triste"}:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    elif token[0] in {"snr","enj","trt"}:
         E2(automata,token)
         automata.analex()
-        if automata.token is ")":
+        if automata.token[0] is "parentesisCierra":
             ...
         else:
-            #sintax error
+            manejadorErrores(token[2],"Error sintáctico",token[0])
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
+def F2(automata,token):
+    if token[0] is "ceo":
+        automata.analex()
+        if automata.token[0] is "parentesisAbre":
+            automata.analex()
+            if automata.token[0] is "id":
+                automata.analex()
+                if automata.token[0] is "coma":
+                    automata.analex()
+                    F2_prima(automata,automata.token)
+                else:
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
+            else:
+                manejadorErrores(token[2],"Error sintáctico",token[0])
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
+
+def F2_prima(automata,token):
+    if token[0] in ["dr","izq"]:
+        OJO(automata,token)
+        automata.analex()
+        if automata.token[0] is "coma":
+            automata.analex()
+            if automata.token[0] in ["abr","crr"]:
+                E1(automata,token)
+                automata.analex()
+                if automata.token[0] is "parentesisCierra":
+                    ...
+                else:
+                    manejadorErrores(token[2],"Error sintáctico",token[0])
+            else:
+                manejadorErrores(token[2],"Error sintáctico",token[0])
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    if token[0] in ["abr","crr"]:
+        E1(automata,token)
+        automata.analex()
+        if automata.token[0] is "parentesisCierra":
+            ...
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    else:
+       manejadorErrores(token[2],"Error sintáctico",token[0])
+
+def EC(automata,token):
+    if token[0] is "cl":
+        automata.analex()
+        if automata.token[0] is "numero":
+            automata.analex()
+            token = Z(automata,automata.token)
+            if token[0] is "fc":
+                ...
+            else:
+                manejadorErrores(token[2],"Error sintáctico",token[0])
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
+
+def ES(automata,token):
+    if token[0] is "si":
+        automata.analex()
+        PR(automata,automata.token)
+        automata.analex()
+        CP(automata,automata.token)
+        automata.analex()
+        PR(automata.analex())
+        automata.analex()
+        if automata.token[0] is "ents":
+            automata.analex()
+            token = Z(automata,automata.token)
+            ES_prima(automata,token)
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
+
+def ES_prima(automata,token):
+    if token[0] is "fns":
+        ...
+    elif token[0] is "sino":
+        automata.analex()
+        token = Z(automata,automata.token)
+        if token[0] is "fns":
+            ...
+        else:
+            manejadorErrores(token[2],"Error sintáctico",token[0])
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
+
+def PR(automata,token):
+    if token[0] is "eoi":
+        ...
+    elif token[0] is "eod":
+        ...
+    elif token[0] is "eb":
+        ...
+    elif token[0] in ["dr","izq"]:
+        ...
+    elif token[0] in ["abr","crr"]:
+        ...
+    elif token[0] in ["snr","enj","trt"]:
+        ...
+    elif token[0] is "numero":
+        ...
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 #################
 
 def E1(automata,token):
-    if token is "abierto":
+    if token[0] is "abr":
         ...
-    elif token is "cerrado":
+    elif token[0] is "crr":
         ...
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def E2(automata,token):
-    if token is "sonriente":
+    if token[0] is "snr":
         ...
-    elif token is "enojado":
+    elif token[0] is "enj":
         ...
-    elif token is "triste":
+    elif token[0] is "trt":
         ...
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
 def OJO(automata,token):
-    if token is "derecho":
+    if token[0] is "dr":
         ...
-    elif token is "izquierdo":
+    elif token[0] is "izq":
         ...
     else:
-        #sintax error
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
+def CP(automata,token):
+    if token[0] is "igualdad":
+        ...
+    elif token[0] is "desigualdad":
+        ...
+    else:
+        manejadorErrores(token[2],"Error sintáctico",token[0])
 
