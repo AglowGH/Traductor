@@ -4,7 +4,7 @@ Inicio
     creaCara(Matilde, 120, 150)
     creaCara(Andres, 300, 150)
     cambioEstadoOjo(Andres, abierto)
-    cambioEstadoOjo(Andres, derechoOizquierdo,cerrado)
+    cambioEstadoOjo(Andres, derecho,cerrado)
 
     Ciclo 4
         Si estadoOjoDer=abierto entonces
@@ -25,7 +25,7 @@ Inicio
         
         cambioEstadoBoca(Andres, enojado)
         
-        cambioEstadoBoca(Matilde, neutro)
+        cambioEstadoBoca(Matilde, triste)
 
     finCiclo
 
