@@ -59,11 +59,10 @@ class Automata:
         if self.codigo == []:
             self.token = 'EOF'
             return
-        
+    
         lexema = ''
         estado = self.estado_inicial
         error  = ''
-
         for letra in self.codigo[0][0]:
             bandera = False
             
@@ -72,18 +71,18 @@ class Automata:
                     estado = dic[0]
                     lexema += letra
                     bandera = True
+                
+            if estado in self.estados_finales:
+                if int(self.dic_retrocesos[estado]) == 0:
+                    break
+                if not(bandera):
+                    retroceso = int(self.dic_retrocesos[estado])
+                    lexema = lexema[:-retroceso]
                     break
             
             error += letra
-            if not(bandera):
-                break
             
         if estado in self.estados_finales:
-            retroceso = int(self.dic_retrocesos[estado])
-            if retroceso > 0:
-                retroceso -= 1
-            if retroceso != 0:
-                lexema = lexema[:-retroceso]
             
             if lexema in self.palabras_reservadas.keys():
                 tipo = self.palabras_reservadas[lexema]
@@ -99,7 +98,8 @@ class Automata:
                 self.codigo.pop(0)
                 self.linea.pop(0)
         else:
-             manejadorErrores(self.linea[0],"Error lexico",error)
+            manejadorErrores(self.linea[0],"Error lexico",error)
+        
 
 def crearAutomata(ubicacion_archivo):
     automata = Automata()
@@ -171,10 +171,10 @@ for linea in auto.codigo:
 
 
 #analizador_lexico
-#auto.analex()
-#while auto.token != "EOF":
-#    print(auto.token)
-#    auto.analex()
+auto.analex()
+while auto.token != "EOF":
+    print(auto.token)
+    auto.analex()
 #
 #
 #Analizador sintactico LL1 ASDR
@@ -483,4 +483,4 @@ def X(automata):
     automata.analex()
     I(automata,automata.token)
 
-X(auto)
+#X(auto)
