@@ -65,11 +65,12 @@ class Automata:
         error  = ''
         for letra in self.codigo[0][0]:
             bandera = False
+            error += letra
+            lexema += letra
             
             for dic in self.tabla_transciciones[estado].items():
                 if letra in dic[1]:
                     estado = dic[0]
-                    lexema += letra
                     bandera = True
                 
             if estado in self.estados_finales:
@@ -79,8 +80,10 @@ class Automata:
                     retroceso = int(self.dic_retrocesos[estado])
                     lexema = lexema[:-retroceso]
                     break
+            elif not(bandera):
+                break
             
-            error += letra
+            
             
         if estado in self.estados_finales:
             
@@ -171,10 +174,10 @@ for linea in auto.codigo:
 
 
 #analizador_lexico
-auto.analex()
-while auto.token != "EOF":
-    print(auto.token)
-    auto.analex()
+#auto.analex()
+#while auto.token != "EOF":
+#    print(auto.token)
+#    auto.analex()
 #
 #
 #Analizador sintactico LL1 ASDR
@@ -483,4 +486,4 @@ def X(automata):
     automata.analex()
     I(automata,automata.token)
 
-#X(auto)
+X(auto)
