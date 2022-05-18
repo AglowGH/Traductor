@@ -1,0 +1,35 @@
+Programa Prueba_1
+
+Inicio
+	creaCara(Ricardo,250,350)
+	creaCara(Liz,350,175)
+	creaCara(Sarah,450,350)
+	
+	Ciclo 100
+
+		Si estadoOjoDer=abierto entonces
+			
+			cambioEstadoOjo(Liz,abierto)
+			cambioEstadoOjo(Ricardo,derecho,cerrado)
+		Sino
+			cambioEstadoOjo(Liz,cerrado)
+			cambioEstadoOjo(Ricardo,derecho,abierto)
+		finSi
+
+		Si 5=5 entonces
+
+			Si estadoBoca <> abierto entonces
+				cambioEstadoBoca(Sarah,abierto)
+			Sino
+				cambioEstadoBoca(Sarah,enojado)
+			finSi
+		finSi
+	finCiclo
+
+fin
+
+
+
+
+
+

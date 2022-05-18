@@ -1,8 +1,8 @@
 Programa Emocion_1
 
 Inicio
-    creaCara(Matilde, 120, 150)
-    creaCara(Andres, 300, 150)
+    creaCara(Matilde, 400, 300)
+    creaCara(Andres, 110, 400)
     cambioEstadoOjo(Andres, abierto)
     cambioEstadoOjo(Andres, derecho,cerrado)
 
@@ -30,3 +30,62 @@ Inicio
     finCiclo
 
 fin
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

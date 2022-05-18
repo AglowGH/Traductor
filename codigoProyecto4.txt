@@ -1,0 +1,39 @@
+Programa Emocion_1
+Inicio
+creaCara(Matilde, 120, 150)
+creaCara(Andres, 300, 150)
+cambioEstadoOjo(Andres, abierto)
+cambioEstadoOjo(Andres, izquierdo, cerrado)
+Ciclo 4
+Si estadoOjoDer=abierto entonces
+Si estadoOjoIzq = abierto entonces
+cambioEstadoOjo(Matilde, cerrado)
+finSi
+Sino
+cambioEstadoOjo(Matilde, abierto)
+finSi
+cambioEstadoBoca(Matilde, sonriente)
+cambioEstadoBoca(Andres, enojado)
+cambioEstadoBoca(Matilde, triste)
+finCiclo
+cambiarNombre(Andres , Marcos )
+borraCara(Matilde)
+creaCara( Beto, 400, 500)
+Ciclo 5
+Ciclo 3
+cambioEstadoBoca(Beto, sonriente)
+cambioEstadoOjo(Beto, cerrado)
+cambioEstadoBoca(Marcos, enojado)
+cambioEstadoOjo(Marcos, cerrado)
+finCiclo
+Ciclo 3
+cambioEstadoBoca(Beto, enojado)
+cambioEstadoOjo(Beto, derecho, abierto)
+cambioEstadoBoca(Marcos, triste)
+cambioEstadoOjo(Marcos, izquierdo, abierto)
+finCiclo
+finCiclo
+fin
+
+
+

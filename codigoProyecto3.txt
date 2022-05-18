@@ -1,0 +1,35 @@
+Programa Prueba_2
+
+Inicio
+	creaCara(Carmen,200,600)
+	creaCara(Ricardo,400,400)
+	creaCara(Valeria,600,200)
+
+	Ciclo 10
+		Si estadoOjoDer=abierto entonces
+			cambioEstadoOjo(Carmen,cerrado)
+			cambioEstadoOjo(Ricardo,cerrado)
+			cambioEstadoOjo(Valeria,cerrado)
+		Sino
+			cambioEstadoOjo(Carmen,abierto)
+			cambioEstadoOjo(Ricardo,abierto)
+			cambioEstadoOjo(Valeria,abierto)
+		finSi
+	finCiclo
+	borraCara(Valeria)
+	cambiarNombre(Ricardo,Rick)
+	borraCara(Carmen)
+fin
+
+
+
+
+
+
+
+
+
+
+
+
+
